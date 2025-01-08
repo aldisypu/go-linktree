@@ -1,0 +1,330 @@
+openapi: 3.0.3
+info:
+  title: Go Linktree RESTful API
+  description: Go Linktree RESTful API
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+paths:
+  /api/users:
+    post:
+      tags:
+        - User API
+      description: Register new user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+                name:
+                  type: string
+              required:
+                - username
+                - name
+                - password
+      responses:
+        200:
+          description: Success register new user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      username:
+                        type: string
+                      name:
+                        type: string
+                      created_at:
+                        type: number
+                      updated_at:
+                        type: number
+    delete:
+      tags:
+        - User API
+      description: Logout user
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Success logout user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: boolean
+  /api/users/_login:
+    post:
+      tags:
+        - User API
+      description: Login user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+              required:
+                - username
+                - password
+      responses:
+        200:
+          description: Success login
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      token:
+                        type: string
+  /api/users/_current:
+    get:
+      tags:
+        - User API
+      description: Get current user
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Success register new user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      username:
+                        type: string
+                      name:
+                        type: string
+                      created_at:
+                        type: number
+                      updated_at:
+                        type: number
+    patch:
+      tags:
+        - User API
+      description: Update current user
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                name:
+                  type: string
+      responses:
+        200:
+          description: Success register new user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      username:
+                        type: string
+                      name:
+                        type: string
+                      created_at:
+                        type: number
+                      updated_at:
+                        type: number
+
+
+  /api/links:
+    post:
+      tags:
+        - Link API
+      description: Create new link
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                url:
+                  type: string
+      responses:
+        '200':
+          description: Success create new link
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      title:
+                        type: string
+                      url:
+                        type: string
+                      created_at:
+                        type: number
+                      updated_at:
+                        type: number
+
+    get:
+      tags:
+        - Link API
+      description: Get all links
+      responses:
+        '200':
+          description: Success get list of links
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        title:
+                          type: string
+                        url:
+                          type: string
+                        created_at:
+                          type: number
+                        updated_at:
+                          type: number
+
+  /api/links/{linkId}:
+    get:
+      tags:
+        - Link API
+      description: Get link by id
+      parameters:
+        - name: linkId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success get link
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      title:
+                        type: string
+                      url:
+                        type: string
+                      created_at:
+                        type: number
+                      updated_at:
+                        type: number
+
+    put:
+      tags:
+        - Link API
+      description: Update link by id
+      parameters:
+        - name: linkId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                url:
+                  type: string
+      responses:
+        '200':
+          description: Success update link
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      title:
+                        type: string
+                      url:
+                        type: string
+                      created_at:
+                        type: number
+                      updated_at:
+                        type: number
+
+    delete:
+      tags:
+        - Link API
+      description: Delete link by id
+      parameters:
+        - name: linkId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success delete link
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: boolean
