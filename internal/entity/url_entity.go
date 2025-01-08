@@ -1,4 +1,4 @@
-package entitiy
+package entity
 
 type Url struct {
 	ID        string `gorm:"column:id;primaryKey"`

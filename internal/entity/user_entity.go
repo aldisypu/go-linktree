@@ -1,4 +1,4 @@
-package entitiy
+package entity
 
 type User struct {
 	Username  string `gorm:"column:username;primaryKey"`
