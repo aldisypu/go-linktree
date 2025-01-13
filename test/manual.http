@@ -1,0 +1,71 @@
+### Register new user
+POST http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+  "username": "budi",
+  "password": "secret"
+  "name": "Budi"
+}
+
+### Login user
+POST http://localhost:3000/api/users/_login
+Content-Type: application/json
+
+{
+  "username": "budi",
+  "password": "secret"
+}
+
+### Get user profile
+GET http://localhost:3000/api/users/_current
+Accept: application/json
+Authorization: {{token}}
+
+### Logout user
+DELETE http://localhost:3000/api/users
+Accept: application/json
+Authorization: {{token}}
+
+### Update user
+PATCH http://localhost:3000/api/users/_current
+Content-Type: application/json
+Accept: application/json
+Authorization: {{token}}
+
+{
+  "name": "Budio"
+}
+
+### Create url
+POST http://localhost:3000/api/urls
+Content-Type: application/json
+Accept: application/json
+Authorization: {{token}}
+
+{
+  "title": "golang",
+  "url": "https://github.com/golang"
+}
+
+### Get detail url
+GET http://localhost:3000/api/urls/{{urlId}}
+Content-Type: application/json
+Accept: application/json
+Authorization: {{token}}
+
+### update url
+PUT http://localhost:3000/api/urls/{{urlId}}
+Content-Type: application/json
+Accept: application/json
+Authorization: {{token}}
+
+{
+  "title": "go",
+  "url": "https://github.com/golang/go"
+}
+
+### delete url
+DELETE http://localhost:3000/api/urls/{{urlId}}
+Accept: application/json
+Authorization: {{token}}
