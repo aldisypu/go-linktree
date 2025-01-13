@@ -54,7 +54,7 @@ Content-Type: application/json
 Accept: application/json
 Authorization: {{token}}
 
-### update url
+### Update url
 PUT http://localhost:3000/api/urls/{{urlId}}
 Content-Type: application/json
 Accept: application/json
@@ -65,7 +65,7 @@ Authorization: {{token}}
   "url": "https://github.com/golang/go"
 }
 
-### delete url
+### Delete url
 DELETE http://localhost:3000/api/urls/{{urlId}}
 Accept: application/json
 Authorization: {{token}}
