@@ -13,7 +13,7 @@ database:
     password: "root"
     host: "localhost"
     port: 3306
-    name: "go-linktree"
+    name: "go_linktree"
     pool:
       idle: 10
       max: 100
