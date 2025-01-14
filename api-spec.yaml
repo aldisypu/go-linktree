@@ -167,12 +167,52 @@ paths:
                       updated_at:
                         type: number
 
+  /api/users/{username}/links:
+    get:
+      tags:
+        - Link API
+      description: Get all links
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success get list of links
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        title:
+                          type: string
+                        url:
+                          type: string
+                        created_at:
+                          type: number
+                        updated_at:
+                          type: number
 
   /api/links:
     post:
       tags:
         - Link API
       description: Create new link
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -205,40 +245,17 @@ paths:
                       updated_at:
                         type: number
 
-    get:
-      tags:
-        - Link API
-      description: Get all links
-      responses:
-        '200':
-          description: Success get list of links
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                        title:
-                          type: string
-                        url:
-                          type: string
-                        created_at:
-                          type: number
-                        updated_at:
-                          type: number
-
   /api/links/{linkId}:
     get:
       tags:
         - Link API
       description: Get link by id
       parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
         - name: linkId
           in: path
           required: true
@@ -271,6 +288,11 @@ paths:
         - Link API
       description: Update link by id
       parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
         - name: linkId
           in: path
           required: true
@@ -313,6 +335,11 @@ paths:
         - Link API
       description: Delete link by id
       parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
         - name: linkId
           in: path
           required: true
