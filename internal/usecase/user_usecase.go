@@ -112,7 +112,7 @@ func (c *UserUseCase) Login(ctx context.Context, request *model.LoginUserRequest
 	}
 
 	user := new(entity.User)
-	if err := c.UserRepository.FindById(tx, user, request.Username); err != nil {
+	if err := c.UserRepository.FindByUsername(tx, user, request.Username); err != nil {
 		c.Log.Warnf("Failed find user by username : %+v", err)
 		return nil, fiber.ErrUnauthorized
 	}
@@ -146,7 +146,7 @@ func (c *UserUseCase) Current(ctx context.Context, request *model.GetUserRequest
 	}
 
 	user := new(entity.User)
-	if err := c.UserRepository.FindById(tx, user, request.Username); err != nil {
+	if err := c.UserRepository.FindByUsername(tx, user, request.Username); err != nil {
 		c.Log.Warnf("Failed find user by username : %+v", err)
 		return nil, fiber.ErrNotFound
 	}
@@ -169,7 +169,7 @@ func (c *UserUseCase) Logout(ctx context.Context, request *model.LogoutUserReque
 	}
 
 	user := new(entity.User)
-	if err := c.UserRepository.FindById(tx, user, request.Username); err != nil {
+	if err := c.UserRepository.FindByUsername(tx, user, request.Username); err != nil {
 		c.Log.Warnf("Failed find user by username : %+v", err)
 		return false, fiber.ErrNotFound
 	}
@@ -199,7 +199,7 @@ func (c *UserUseCase) Update(ctx context.Context, request *model.UpdateUserReque
 	}
 
 	user := new(entity.User)
-	if err := c.UserRepository.FindById(tx, user, request.Username); err != nil {
+	if err := c.UserRepository.FindByUsername(tx, user, request.Username); err != nil {
 		c.Log.Warnf("Failed find user by username : %+v", err)
 		return nil, fiber.ErrNotFound
 	}
