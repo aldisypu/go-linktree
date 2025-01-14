@@ -37,8 +37,8 @@ Authorization: {{token}}
   "name": "Budio"
 }
 
-### Create url
-POST http://localhost:3000/api/urls
+### Create link
+POST http://localhost:3000/api/links
 Content-Type: application/json
 Accept: application/json
 Authorization: {{token}}
@@ -48,14 +48,14 @@ Authorization: {{token}}
   "url": "https://github.com/golang"
 }
 
-### Get detail url
-GET http://localhost:3000/api/urls/{{urlId}}
+### Get detail link
+GET http://localhost:3000/api/links/{{linkId}}
 Content-Type: application/json
 Accept: application/json
 Authorization: {{token}}
 
-### Update url
-PUT http://localhost:3000/api/urls/{{urlId}}
+### Update link
+PUT http://localhost:3000/api/links/{{linkId}}
 Content-Type: application/json
 Accept: application/json
 Authorization: {{token}}
@@ -65,7 +65,7 @@ Authorization: {{token}}
   "url": "https://github.com/golang/go"
 }
 
-### Delete url
-DELETE http://localhost:3000/api/urls/{{urlId}}
+### Delete link
+DELETE http://localhost:3000/api/links/{{linkId}}
 Accept: application/json
 Authorization: {{token}}
