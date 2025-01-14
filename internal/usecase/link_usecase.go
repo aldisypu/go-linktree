@@ -14,24 +14,24 @@ import (
 	"gorm.io/gorm"
 )
 
-type UrlUseCase struct {
-	DB            *gorm.DB
-	Log           *logrus.Logger
-	Validate      *validator.Validate
-	UrlRepository *repository.UrlRepository
+type LinkUseCase struct {
+	DB             *gorm.DB
+	Log            *logrus.Logger
+	Validate       *validator.Validate
+	LinkRepository *repository.LinkRepository
 }
 
-func NewUrlUseCase(db *gorm.DB, logger *logrus.Logger, validate *validator.Validate,
-	urlRepository *repository.UrlRepository) *UrlUseCase {
-	return &UrlUseCase{
-		DB:            db,
-		Log:           logger,
-		Validate:      validate,
-		UrlRepository: urlRepository,
+func NewLinkUseCase(db *gorm.DB, logger *logrus.Logger, validate *validator.Validate,
+	linkRepository *repository.LinkRepository) *LinkUseCase {
+	return &LinkUseCase{
+		DB:             db,
+		Log:            logger,
+		Validate:       validate,
+		LinkRepository: linkRepository,
 	}
 }
 
-func (c *UrlUseCase) Create(ctx context.Context, request *model.CreateUrlRequest) (*model.UrlResponse, error) {
+func (c *LinkUseCase) Create(ctx context.Context, request *model.CreateLinkRequest) (*model.LinkResponse, error) {
 	tx := c.DB.WithContext(ctx).Begin()
 	defer tx.Rollback()
 
@@ -40,15 +40,15 @@ func (c *UrlUseCase) Create(ctx context.Context, request *model.CreateUrlRequest
 		return nil, fiber.ErrBadRequest
 	}
 
-	url := &entity.Url{
+	link := &entity.Link{
 		ID:       uuid.New().String(),
 		Title:    request.Title,
 		Url:      request.Url,
 		Username: request.Username,
 	}
 
-	if err := c.UrlRepository.Create(tx, url); err != nil {
-		c.Log.WithError(err).Error("failed to creating url")
+	if err := c.LinkRepository.Create(tx, link); err != nil {
+		c.Log.WithError(err).Error("failed to creating link")
 		return nil, fiber.ErrInternalServerError
 	}
 
@@ -57,16 +57,16 @@ func (c *UrlUseCase) Create(ctx context.Context, request *model.CreateUrlRequest
 		return nil, fiber.ErrInternalServerError
 	}
 
-	return converter.UrlToResponse(url), nil
+	return converter.LinkToResponse(link), nil
 }
 
-func (c *UrlUseCase) Update(ctx context.Context, request *model.UpdateUrlRequest) (*model.UrlResponse, error) {
+func (c *LinkUseCase) Update(ctx context.Context, request *model.UpdateLinkRequest) (*model.LinkResponse, error) {
 	tx := c.DB.WithContext(ctx).Begin()
 	defer tx.Rollback()
 
-	url := new(entity.Url)
-	if err := c.UrlRepository.FindByIdAndUsername(tx, url, request.ID, request.Username); err != nil {
-		c.Log.WithError(err).Error("failed to getting url")
+	link := new(entity.Link)
+	if err := c.LinkRepository.FindByIdAndUsername(tx, link, request.ID, request.Username); err != nil {
+		c.Log.WithError(err).Error("failed to getting link")
 		return nil, fiber.ErrNotFound
 	}
 
@@ -75,11 +75,11 @@ func (c *UrlUseCase) Update(ctx context.Context, request *model.UpdateUrlRequest
 		return nil, fiber.ErrBadRequest
 	}
 
-	url.Title = request.Title
-	url.Url = request.Url
+	link.Title = request.Title
+	link.Url = request.Url
 
-	if err := c.UrlRepository.Update(tx, url); err != nil {
-		c.Log.WithError(err).Error("failed to updating url")
+	if err := c.LinkRepository.Update(tx, link); err != nil {
+		c.Log.WithError(err).Error("failed to updating link")
 		return nil, fiber.ErrInternalServerError
 	}
 
@@ -88,10 +88,10 @@ func (c *UrlUseCase) Update(ctx context.Context, request *model.UpdateUrlRequest
 		return nil, fiber.ErrInternalServerError
 	}
 
-	return converter.UrlToResponse(url), nil
+	return converter.LinkToResponse(link), nil
 }
 
-func (c *UrlUseCase) Get(ctx context.Context, request *model.GetUrlRequest) (*model.UrlResponse, error) {
+func (c *LinkUseCase) Get(ctx context.Context, request *model.GetLinkRequest) (*model.LinkResponse, error) {
 	tx := c.DB.WithContext(ctx).Begin()
 	defer tx.Rollback()
 
@@ -100,9 +100,9 @@ func (c *UrlUseCase) Get(ctx context.Context, request *model.GetUrlRequest) (*mo
 		return nil, fiber.ErrBadRequest
 	}
 
-	url := new(entity.Url)
-	if err := c.UrlRepository.FindByIdAndUsername(tx, url, request.ID, request.Username); err != nil {
-		c.Log.WithError(err).Error("failed to getting url")
+	link := new(entity.Link)
+	if err := c.LinkRepository.FindByIdAndUsername(tx, link, request.ID, request.Username); err != nil {
+		c.Log.WithError(err).Error("failed to getting link")
 		return nil, fiber.ErrNotFound
 	}
 
@@ -111,10 +111,10 @@ func (c *UrlUseCase) Get(ctx context.Context, request *model.GetUrlRequest) (*mo
 		return nil, fiber.ErrInternalServerError
 	}
 
-	return converter.UrlToResponse(url), nil
+	return converter.LinkToResponse(link), nil
 }
 
-func (c *UrlUseCase) Delete(ctx context.Context, request *model.DeleteUrlRequest) error {
+func (c *LinkUseCase) Delete(ctx context.Context, request *model.DeleteLinkRequest) error {
 	tx := c.DB.WithContext(ctx).Begin()
 	defer tx.Rollback()
 
@@ -123,14 +123,14 @@ func (c *UrlUseCase) Delete(ctx context.Context, request *model.DeleteUrlRequest
 		return fiber.ErrBadRequest
 	}
 
-	url := new(entity.Url)
-	if err := c.UrlRepository.FindByIdAndUsername(tx, url, request.ID, request.Username); err != nil {
-		c.Log.WithError(err).Error("failed to getting url")
+	link := new(entity.Link)
+	if err := c.LinkRepository.FindByIdAndUsername(tx, link, request.ID, request.Username); err != nil {
+		c.Log.WithError(err).Error("failed to getting link")
 		return fiber.ErrNotFound
 	}
 
-	if err := c.UrlRepository.Delete(tx, url); err != nil {
-		c.Log.WithError(err).Error("failed to deleting url")
+	if err := c.LinkRepository.Delete(tx, link); err != nil {
+		c.Log.WithError(err).Error("failed to deleting link")
 		return fiber.ErrInternalServerError
 	}
 

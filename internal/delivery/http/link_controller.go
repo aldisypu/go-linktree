@@ -9,22 +9,22 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-type UrlController struct {
-	UseCase *usecase.UrlUseCase
+type LinkController struct {
+	UseCase *usecase.LinkUseCase
 	Log     *logrus.Logger
 }
 
-func NewUrlController(useCase *usecase.UrlUseCase, log *logrus.Logger) *UrlController {
-	return &UrlController{
+func NewLinkController(useCase *usecase.LinkUseCase, log *logrus.Logger) *LinkController {
+	return &LinkController{
 		UseCase: useCase,
 		Log:     log,
 	}
 }
 
-func (c *UrlController) Create(ctx *fiber.Ctx) error {
+func (c *LinkController) Create(ctx *fiber.Ctx) error {
 	auth := middleware.GetUser(ctx)
 
-	request := new(model.CreateUrlRequest)
+	request := new(model.CreateLinkRequest)
 	if err := ctx.BodyParser(request); err != nil {
 		c.Log.WithError(err).Error("failed to parsing request body")
 		return fiber.ErrBadRequest
@@ -33,62 +33,62 @@ func (c *UrlController) Create(ctx *fiber.Ctx) error {
 
 	response, err := c.UseCase.Create(ctx.UserContext(), request)
 	if err != nil {
-		c.Log.WithError(err).Error("failed to creating url")
+		c.Log.WithError(err).Error("failed to creating link")
 		return err
 	}
 
-	return ctx.JSON(model.WebResponse[*model.UrlResponse]{Data: response})
+	return ctx.JSON(model.WebResponse[*model.LinkResponse]{Data: response})
 }
 
-func (c *UrlController) Get(ctx *fiber.Ctx) error {
+func (c *LinkController) Get(ctx *fiber.Ctx) error {
 	auth := middleware.GetUser(ctx)
 
-	request := &model.GetUrlRequest{
+	request := &model.GetLinkRequest{
 		Username: auth.ID,
-		ID:       ctx.Params("urlId"),
+		ID:       ctx.Params("linkId"),
 	}
 
 	response, err := c.UseCase.Get(ctx.UserContext(), request)
 	if err != nil {
-		c.Log.WithError(err).Error("failed to getting url")
+		c.Log.WithError(err).Error("failed to getting link")
 		return err
 	}
 
-	return ctx.JSON(model.WebResponse[*model.UrlResponse]{Data: response})
+	return ctx.JSON(model.WebResponse[*model.LinkResponse]{Data: response})
 }
 
-func (c *UrlController) Update(ctx *fiber.Ctx) error {
+func (c *LinkController) Update(ctx *fiber.Ctx) error {
 	auth := middleware.GetUser(ctx)
 
-	request := new(model.UpdateUrlRequest)
+	request := new(model.UpdateLinkRequest)
 	if err := ctx.BodyParser(request); err != nil {
 		c.Log.WithError(err).Error("failed to parsing request body")
 		return fiber.ErrBadRequest
 	}
 
 	request.Username = auth.ID
-	request.ID = ctx.Params("urlId")
+	request.ID = ctx.Params("linkId")
 
 	response, err := c.UseCase.Update(ctx.UserContext(), request)
 	if err != nil {
-		c.Log.WithError(err).Error("failed to updating url")
+		c.Log.WithError(err).Error("failed to updating link")
 		return err
 	}
 
-	return ctx.JSON(model.WebResponse[*model.UrlResponse]{Data: response})
+	return ctx.JSON(model.WebResponse[*model.LinkResponse]{Data: response})
 }
 
-func (c *UrlController) Delete(ctx *fiber.Ctx) error {
+func (c *LinkController) Delete(ctx *fiber.Ctx) error {
 	auth := middleware.GetUser(ctx)
-	urlId := ctx.Params("urlId")
+	linkId := ctx.Params("linkId")
 
-	request := &model.DeleteUrlRequest{
+	request := &model.DeleteLinkRequest{
 		Username: auth.ID,
-		ID:       urlId,
+		ID:       linkId,
 	}
 
 	if err := c.UseCase.Delete(ctx.UserContext(), request); err != nil {
-		c.Log.WithError(err).Error("failed to deleting url")
+		c.Log.WithError(err).Error("failed to deleting link")
 		return err
 	}
 

@@ -9,7 +9,7 @@ import (
 type RouteConfig struct {
 	App            *fiber.App
 	UserController *http.UserController
-	UrlController  *http.UrlController
+	LinkController *http.LinkController
 	AuthMiddleware fiber.Handler
 }
 
@@ -29,8 +29,8 @@ func (c *RouteConfig) SetupAuthRoute() {
 	c.App.Patch("/api/users/_current", c.UserController.Update)
 	c.App.Get("/api/users/_current", c.UserController.Current)
 
-	c.App.Post("/api/urls", c.UrlController.Create)
-	c.App.Put("/api/urls/:urlId", c.UrlController.Update)
-	c.App.Get("/api/urls/:urlId", c.UrlController.Get)
-	c.App.Delete("/api/urls/:urlId", c.UrlController.Delete)
+	c.App.Post("/api/links", c.LinkController.Create)
+	c.App.Put("/api/links/:linkId", c.LinkController.Update)
+	c.App.Get("/api/links/:linkId", c.LinkController.Get)
+	c.App.Delete("/api/links/:linkId", c.LinkController.Delete)
 }

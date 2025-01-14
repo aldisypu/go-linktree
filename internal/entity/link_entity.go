@@ -1,6 +1,6 @@
 package entity
 
-type Url struct {
+type Link struct {
 	ID        string `gorm:"column:id;primaryKey"`
 	Title     string `gorm:"column:title"`
 	Url       string `gorm:"column:url"`
@@ -10,6 +10,6 @@ type Url struct {
 	User      User   `gorm:"foreignKey:username;references:username"`
 }
 
-func (r *Url) TableName() string {
-	return "urls"
+func (r *Link) TableName() string {
+	return "links"
 }

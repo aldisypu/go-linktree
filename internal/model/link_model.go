@@ -1,6 +1,6 @@
 package model
 
-type UrlResponse struct {
+type LinkResponse struct {
 	ID        string `json:"id"`
 	Title     string `json:"title"`
 	Url       string `json:"url"`
@@ -8,25 +8,25 @@ type UrlResponse struct {
 	UpdatedAt int64  `json:"updated_at"`
 }
 
-type CreateUrlRequest struct {
+type CreateLinkRequest struct {
 	Username string `json:"-" validate:"required"`
 	Title    string `json:"title" validate:"required,max=100"`
 	Url      string `json:"url" validate:"required,max=2048"`
 }
 
-type UpdateUrlRequest struct {
+type UpdateLinkRequest struct {
 	Username string `json:"-" validate:"required"`
 	ID       string `json:"-" validate:"required,max=100,uuid"`
 	Title    string `json:"title" validate:"required,max=100"`
 	Url      string `json:"url" validate:"required,max=2048"`
 }
 
-type GetUrlRequest struct {
+type GetLinkRequest struct {
 	Username string `json:"-" validate:"required"`
 	ID       string `json:"-" validate:"required,max=100,uuid"`
 }
 
-type DeleteUrlRequest struct {
+type DeleteLinkRequest struct {
 	Username string `json:"-" validate:"required"`
 	ID       string `json:"-" validate:"required,max=100,uuid"`
 }

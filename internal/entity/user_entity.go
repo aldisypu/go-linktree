@@ -7,7 +7,7 @@ type User struct {
 	Token     string `gorm:"column:token"`
 	CreatedAt int64  `gorm:"column:created_at;autoCreateTime:milli"`
 	UpdatedAt int64  `gorm:"column:updated_at;autoCreateTime:milli;autoUpdateTime:milli"`
-	Urls      []Url  `gorm:"foreignKey:username;references:username"`
+	Links     []Link `gorm:"foreignKey:username;references:username"`
 }
 
 func (u *User) TableName() string {
