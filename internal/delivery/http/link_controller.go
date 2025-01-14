@@ -40,6 +40,22 @@ func (c *LinkController) Create(ctx *fiber.Ctx) error {
 	return ctx.JSON(model.WebResponse[*model.LinkResponse]{Data: response})
 }
 
+func (c *LinkController) List(ctx *fiber.Ctx) error {
+	username := ctx.Params("username")
+
+	request := &model.ListLinkRequest{
+		Username: username,
+	}
+
+	responses, err := c.UseCase.List(ctx.UserContext(), request)
+	if err != nil {
+		c.Log.WithError(err).Error("failed to list links")
+		return err
+	}
+
+	return ctx.JSON(model.WebResponse[[]model.LinkResponse]{Data: responses})
+}
+
 func (c *LinkController) Get(ctx *fiber.Ctx) error {
 	auth := middleware.GetUser(ctx)
 

@@ -8,6 +8,10 @@ type LinkResponse struct {
 	UpdatedAt int64  `json:"updated_at"`
 }
 
+type ListLinkRequest struct {
+	Username string `json:"-" validate:"required"`
+}
+
 type CreateLinkRequest struct {
 	Username string `json:"-" validate:"required"`
 	Title    string `json:"title" validate:"required,max=100"`

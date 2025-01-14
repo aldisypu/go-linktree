@@ -37,6 +37,10 @@ Authorization: {{token}}
   "name": "Budio"
 }
 
+### Get all links
+GET http://localhost:3000/api/users/{{username}}/links
+Accept: application/json
+
 ### Create link
 POST http://localhost:3000/api/links
 Content-Type: application/json

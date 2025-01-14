@@ -19,6 +19,7 @@ type LinkUseCase struct {
 	Log            *logrus.Logger
 	Validate       *validator.Validate
 	LinkRepository *repository.LinkRepository
+	UserRepository *repository.UserRepository
 }
 
 func NewLinkUseCase(db *gorm.DB, logger *logrus.Logger, validate *validator.Validate,
@@ -140,4 +141,33 @@ func (c *LinkUseCase) Delete(ctx context.Context, request *model.DeleteLinkReque
 	}
 
 	return nil
+}
+
+func (c *LinkUseCase) List(ctx context.Context, request *model.ListLinkRequest) ([]model.LinkResponse, error) {
+	tx := c.DB.WithContext(ctx).Begin()
+	defer tx.Rollback()
+
+	user := new(entity.User)
+	if err := c.UserRepository.FindByUsername(tx, user, request.Username); err != nil {
+		c.Log.WithError(err).Error("failed to find user")
+		return nil, fiber.ErrNotFound
+	}
+
+	links, err := c.LinkRepository.FindAllByUsername(tx, user.Username)
+	if err != nil {
+		c.Log.WithError(err).Error("failed to find links")
+		return nil, fiber.ErrInternalServerError
+	}
+
+	if err := tx.Commit().Error; err != nil {
+		c.Log.WithError(err).Error("failed to commit transaction")
+		return nil, fiber.ErrInternalServerError
+	}
+
+	responses := make([]model.LinkResponse, len(links))
+	for i, link := range links {
+		responses[i] = *converter.LinkToResponse(&link)
+	}
+
+	return responses, nil
 }

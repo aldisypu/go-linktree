@@ -21,3 +21,11 @@ func NewLinkRepository(log *logrus.Logger) *LinkRepository {
 func (r *LinkRepository) FindByIdAndUsername(db *gorm.DB, link *entity.Link, id string, username string) error {
 	return db.Where("id = ? AND username = ?", id, username).Take(link).Error
 }
+
+func (r *LinkRepository) FindAllByUsername(tx *gorm.DB, username string) ([]entity.Link, error) {
+	var links []entity.Link
+	if err := tx.Where("username = ?", username).Find(&links).Error; err != nil {
+		return nil, err
+	}
+	return links, nil
+}
